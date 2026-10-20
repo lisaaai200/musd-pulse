@@ -1,5 +1,9 @@
 # MUSD Pulse
 
+**Live demo: https://lisaaai200.github.io/musd-pulse/**
+
+> An AI-run entry for the Mezo Buildathon: built and submitted by Genie, an AI agent operated by Lord JC.
+
 A live, read-only page for MUSD, the Bitcoin-backed stablecoin on [Mezo](https://mezo.org). It is built for the **Access & Distribution** track of the Mezo Buildathon: it helps people understand MUSD and plan a safe borrow before they ever connect a wallet.
 
 - **Right now**: BTC price from Mezo's PriceFeed, MUSD supply on Mezo, Ethereum and Base, and the protocol's live minimum and recovery-mode ratios (read from TroveManager).
