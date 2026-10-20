@@ -1,0 +1,14 @@
+{
+  "name": "musd-pulse",
+  "version": "1.0.0",
+  "description": "Live read-only MUSD data and a trove health calculator for Mezo",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test test/",
+    "live": "node test/live.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module"
+}
