@@ -3,27 +3,112 @@
 <title>MUSD Pulse: live MUSD data and a trove health calculator</title>
 <style>
 body{font-family:system-ui,sans-serif;max-width:760px;margin:2rem auto;padding:0 1rem;color:#1b1b1f;line-height:1.5}
-h1{margin-bottom:.2rem}.muted{color:#666;font-size:.9rem}.card{border:1px solid #ddd;border-radius:10px;padding:1rem 1.2rem;margin:1rem 0}
+h1{margin-bottom:.2rem}h2{margin-top:0}.muted{color:#666;font-size:.9rem}.card{border:1px solid #ddd;border-radius:10px;padding:1rem 1.2rem;margin:1rem 0}
 table{border-collapse:collapse;width:100%}td{padding:.25rem 0}td:last-child{text-align:right;font-variant-numeric:tabular-nums}
-label{display:block;margin:.5rem 0 .2rem}input{width:100%;padding:.45rem;font-size:1rem;box-sizing:border-box}
+label{display:block;margin:.5rem 0 .2rem}input,textarea,select{width:100%;padding:.45rem;font-size:1rem;box-sizing:border-box}
+textarea{min-height:9rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
 .big{font-size:1.4rem;font-weight:600}.healthy{color:#137333}.moderate{color:#8a6d00}.at-risk{color:#b45309}.liquidatable{color:#b00020}
+ol.steps{padding-left:1.2rem}ol.steps li{margin:.45rem 0}
+.row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem}
+button,.btn{appearance:none;border:1px solid #ccc;background:#f7f7f8;border-radius:8px;padding:.45rem .8rem;font-size:.95rem;cursor:pointer;text-decoration:none;color:inherit;display:inline-block}
+button:hover,.btn:hover{background:#eee}
+.pill{display:inline-block;background:#eef2ff;color:#3730a3;border-radius:999px;padding:.1rem .55rem;font-size:.8rem;margin-left:.35rem}
+code{font-size:.85em;background:#f3f3f5;padding:.05rem .3rem;border-radius:4px}
+.ok{color:#137333}.warn{color:#8a6d00}
 </style></head><body>
 <h1>MUSD Pulse</h1>
-<p class="muted">Live, read-only view of MUSD, the Bitcoin-backed stablecoin on Mezo. No wallet connection, no sign-in, nothing to approve. Data comes straight from public RPC nodes.</p>
+<p class="muted">Live, read-only view of MUSD, the Bitcoin-backed stablecoin on Mezo. No wallet connection, no sign-in, nothing to approve. Data comes straight from public RPC nodes. <span class="pill">Wave 2</span></p>
 
-<div class="card"><h2>Right now</h2>
+<nav class="muted" style="margin:.75rem 0 0">Jump:
+  <a href="#live">Live data</a> ·
+  <a href="#planner">Planner</a> ·
+  <a href="#lookup">Lookup</a> ·
+  <a href="#practice">Testnet practice</a> ·
+  <a href="#bridge">Bridge</a> ·
+  <a href="#alerts">Alerts</a>
+</nav>
+
+<div class="card" id="live"><h2>Right now</h2>
 <table id="snap"><tr><td>Loading live data…</td><td></td></tr></table>
 <p class="muted" id="at"></p></div>
 
-<div class="card"><h2>Will my trove be safe?</h2>
+<div class="card" id="planner"><h2>Will my trove be safe?</h2>
 <p class="muted">Plan a borrow before you open it. Uses the live BTC price and the protocol's own minimum ratios.</p>
 <label for="coll">BTC collateral</label><input id="coll" type="number" min="0" step="0.0001" value="0.05">
 <label for="borrow">MUSD to borrow</label><input id="borrow" type="number" min="0" step="10" value="2000">
 <div id="calc" style="margin-top:1rem"></div></div>
 
-<div class="card"><h2>Check an existing trove</h2>
+<div class="card" id="lookup"><h2>Check an existing trove</h2>
 <label for="addr">Borrower address on Mezo</label><input id="addr" placeholder="0x…">
 <div id="trove" style="margin-top:1rem"></div></div>
+
+<div class="card" id="practice"><h2>Testnet practice trove <span class="pill">Wave 2</span></h2>
+<p class="muted">Practice opening a trove on <strong>Mezo Testnet</strong> using official tools. MUSD Pulse stays read-only — this page never connects a wallet. Follow the links below in your own browser wallet.</p>
+<ol class="steps">
+  <li>Add <strong>Mezo Testnet</strong> to your wallet:
+    Chain ID <code>31611</code>,
+    RPC <code>https://rpc.test.mezo.org</code>,
+    explorer <a href="https://explorer.test.mezo.org/" target="_blank" rel="noopener">explorer.test.mezo.org</a>,
+    native currency BTC.
+    Source: <a href="https://mezo.org/docs/developers/getting-started/" target="_blank" rel="noopener">Developer Getting Started</a>.</li>
+  <li>Request free testnet BTC from the official faucet
+    <a href="https://faucet.test.mezo.org/" target="_blank" rel="noopener">faucet.test.mezo.org</a>
+    (CAPTCHA protected). FAQ: <a href="https://mezo.org/docs/developers/getting-started/faqs/" target="_blank" rel="noopener">How do I get testnet BTC?</a></li>
+  <li>Optionally add testnet MUSD as a custom token:
+    <code>0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503</code>
+    (18 decimals). Mainnet MUSD stays
+    <code>0xdD468A1DDc392dcdbEf6db6e34E89AA338F9F186</code>.
+    Source: <a href="https://mezo.org/docs/users/resources/contracts-reference/" target="_blank" rel="noopener">Contracts reference</a>.</li>
+  <li>Open the official borrow UI on testnet:
+    <a href="https://mezo.org/feature/borrow" target="_blank" rel="noopener">mezo.org/feature/borrow</a>.
+    Confirm your wallet is on Mezo Testnet before signing anything.</li>
+  <li>Borrow against testnet BTC. Protocol floor: at least <strong>1,800 MUSD</strong> principal + <strong>200 MUSD</strong> gas deposit (≈ <strong>2,000 MUSD</strong> total debt on open). Aim for ≥ <strong>150%</strong> collateral ratio. Official borrow notes:
+    <a href="https://mezo.org/docs/developers/getting-started/musd-payments-x402/x402-quickstart/" target="_blank" rel="noopener">x402 quickstart Step 2 (testnet borrow)</a>
+    · <a href="https://mezo.org/blog/borrow-against-your-bitcoin-with-musd/" target="_blank" rel="noopener">Borrow against Bitcoin (blog)</a>.</li>
+  <li>Come back here, paste your address under “Check an existing trove”, and compare the live ratio with the planner. Use the Alerts card to draft a reminder to yourself — still no wallet connect from this page.</li>
+</ol>
+<p class="muted">More detail: <a href="https://mezo.org/docs/developers/musd/" target="_blank" rel="noopener">MUSD Development Guide</a> ·
+<a href="https://mezo.org/docs/developers/getting-started/musd-payments-x402/x402-quickstart/" target="_blank" rel="noopener">x402 quickstart (testnet borrow notes)</a>.</p>
+</div>
+
+<div class="card" id="bridge"><h2>MUSD across Mezo, Ethereum &amp; Base <span class="pill">Wave 2</span></h2>
+<p>MUSD is minted on <strong>Mezo</strong> against BTC collateral. The same ERC-20 address
+<code>0xdD468A1DDc392dcdbEf6db6e34E89AA338F9F186</code> exists on Mezo, Ethereum and Base.</p>
+<p>Cross-chain moves use <strong>Wormhole Native Token Transfer (NTT)</strong> — not a wrapped IOU:</p>
+<ul>
+  <li><strong>Mezo → Ethereum / Base:</strong> MUSD is locked on Mezo; an equal amount is minted on the destination.</li>
+  <li><strong>Ethereum / Base → Mezo:</strong> MUSD is burned on the source; an equal amount is unlocked on Mezo.</li>
+</ul>
+<p>Total supply across the three chains stays consistent under NTT accounting. The “Right now” card shows each chain’s reading; bridged balances can appear on more than one row until you reconcile them.</p>
+<p class="muted">Official UI options (this page does <em>not</em> bridge for you): Mezo dApp withdraw/deposit, or
+<a href="https://portalbridge.com/" target="_blank" rel="noopener">Portal Bridge</a>.
+Minimum transfer is typically <strong>0.01 MUSD</strong>.</p>
+<p class="muted">Docs:
+<a href="https://mezo.org/docs/developers/bridge/wormhole-musd-bridge/" target="_blank" rel="noopener">Wormhole MUSD Bridge</a> ·
+<a href="https://mezo.org/docs/users/mainnet/bridges/" target="_blank" rel="noopener">Mainnet bridges overview</a> ·
+<a href="https://mezo.org/docs/users/resources/contracts-reference/" target="_blank" rel="noopener">Contracts &amp; NTT addresses</a>.</p>
+</div>
+
+<div class="card" id="alerts"><h2>Liquidation reminder (local only) <span class="pill">Wave 2</span></h2>
+<p class="muted">MUSD Pulse never sends email and never stores your address on a server. Draft a reminder in this browser, save it to <code>localStorage</code>, copy the text, or open your own mail app via <code>mailto:</code>.</p>
+<label for="alert-addr">Borrower address to watch</label>
+<input id="alert-addr" placeholder="0x… (optional — can match the lookup above)">
+<label for="alert-email">Your email (stays in this browser / mailto only)</label>
+<input id="alert-email" type="email" placeholder="you@example.com — never committed to the repo" autocomplete="email">
+<label for="alert-note">Personal note</label>
+<input id="alert-note" placeholder="e.g. re-check before Friday’s move">
+<label for="alert-preview">Draft message</label>
+<textarea id="alert-preview" readonly></textarea>
+<div class="row">
+  <button type="button" id="alert-refresh">Refresh draft</button>
+  <button type="button" id="alert-copy">Copy draft</button>
+  <button type="button" id="alert-save">Save in this browser</button>
+  <button type="button" id="alert-load">Load saved</button>
+  <button type="button" id="alert-clear">Clear saved</button>
+  <a class="btn" id="alert-mailto" href="mailto:">Open in my email app</a>
+</div>
+<p class="muted" id="alert-status">Tip: leave the email blank and use Copy if you prefer a chat note to yourself.</p>
+</div>
 
 <p class="muted">Not financial advice. Figures are estimates from on-chain reads; check the official <a href="https://mezo.org/docs/developers/musd/">MUSD docs</a> before borrowing. Built by Genie, an AI agent operated by Lord JC.</p>
 <script type="module" src="./src/app.js"></script>
